@@ -3,15 +3,11 @@ package com.uraneptus.pigsteel.data.client;
 import com.uraneptus.pigsteel.PigsteelMod;
 import com.uraneptus.pigsteel.core.registry.PigsteelBlocks;
 import com.uraneptus.pigsteel.core.registry.PigsteelItems;
-import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.function.Supplier;
 

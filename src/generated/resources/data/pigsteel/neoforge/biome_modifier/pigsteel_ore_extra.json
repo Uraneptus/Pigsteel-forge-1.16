@@ -1,5 +1,5 @@
 {
-  "type": "forge:add_features",
+  "type": "neoforge:add_features",
   "biomes": "#pigsteel:has_extra_pigsteel",
   "features": "pigsteel:pigsteel_ore_extra",
   "step": "underground_ores"

@@ -2,17 +2,15 @@ package com.uraneptus.pigsteel.data.server;
 
 import com.uraneptus.pigsteel.core.registry.PigsteelBlocks;
 import com.uraneptus.pigsteel.core.registry.PigsteelItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
 
 import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 import static com.uraneptus.pigsteel.data.PigsteelDatagenUtil.*;
@@ -20,12 +18,12 @@ import static com.uraneptus.pigsteel.data.PigsteelDatagenUtil.*;
 @SuppressWarnings("SameParameterValue")
 public class PigsteelRecipeProvider extends RecipeProvider {
 
-    public PigsteelRecipeProvider(PackOutput packOutput) {
-        super(packOutput);
+    public PigsteelRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(packOutput, lookupProvider);
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildRecipes(RecipeOutput consumer) {
         oreCookingRecipes(RecipeCategory.MISC, PigsteelBlocks.PORKSLAG, () -> Items.IRON_INGOT, 0.7F, consumer);
         oreCookingRecipes(RecipeCategory.MISC, PigsteelItems.PIGSTEEL_CHUNK, () -> Items.IRON_NUGGET, 0.7F, consumer);
         packableBlockRecipes(PigsteelItems.PIGSTEEL_CHUNK, PigsteelBlocks.PIGSTEEL_CHUNK_BLOCK, consumer);
@@ -67,19 +65,19 @@ public class PigsteelRecipeProvider extends RecipeProvider {
     }
 
 
-    protected static void packableBlockRecipes(Supplier<? extends ItemLike> unpacked, Supplier<? extends ItemLike> packed, Consumer<FinishedRecipe> consumer) {
+    protected static void packableBlockRecipes(Supplier<? extends ItemLike> unpacked, Supplier<? extends ItemLike> packed, RecipeOutput consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, packed.get()).define('#', unpacked.get()).pattern("###").pattern("###").pattern("###")
                 .unlockedBy(getHasName(unpacked.get()), has(unpacked.get())).save(consumer, craftingPath(getItemName(packed.get())));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, unpacked.get(), 9).requires(packed.get())
                 .unlockedBy(getHasName(packed.get()), has(packed.get())).save(consumer, craftingPath(getItemName(unpacked.get())));
     }
 
-    protected static void tilingBlockRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, Consumer<FinishedRecipe> consumer) {
+    protected static void tilingBlockRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, RecipeOutput consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result.get(), 4).define('#', ingredient.get()).pattern("##").pattern("##")
                 .unlockedBy(getHasName(ingredient.get()), has(ingredient.get())).save(consumer, craftingPath(getItemName(result.get())));
     }
 
-    protected static void oreCookingRecipes(RecipeCategory category, Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, float experience, Consumer<FinishedRecipe> consumer) {
+    protected static void oreCookingRecipes(RecipeCategory category, Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, float experience, RecipeOutput consumer) {
         String resultName = getItemName(result.get());
         String ingredientName = getItemName(ingredient.get());
 
@@ -90,34 +88,34 @@ public class PigsteelRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(ingredient.get()), has(ingredient.get())).save(consumer, blastingPath(resultName + "_from_blasting" + "_" + ingredientName));
     }
 
-    protected static void stairRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, Consumer<FinishedRecipe> consumer) {
+    protected static void stairRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, RecipeOutput consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result.get(), 4).define('#', ingredient.get()).pattern("#  ").pattern("## ").pattern("###")
                 .unlockedBy(getHasName(ingredient.get()), has(ingredient.get())).save(consumer, craftingPath(getItemName(result.get())));
     }
 
-    protected static void slabRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, Consumer<FinishedRecipe> consumer) {
+    protected static void slabRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, RecipeOutput consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result.get(), 6).define('#', ingredient.get()).pattern("###")
                 .unlockedBy(getHasName(ingredient.get()), has(ingredient.get())).save(consumer, craftingPath(getItemName(result.get())));
     }
 
-    protected static void waxRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, Consumer<FinishedRecipe> consumer) {
+    protected static void waxRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, RecipeOutput consumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result.get()).requires(ingredient.get()).requires(Items.HONEYCOMB)
                 .unlockedBy(getHasName(ingredient.get()), has(ingredient.get())).save(consumer, craftingPath(getItemName(result.get()) + "_from_honeycomb"));
     }
 
-    protected static void stonecutterRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, int resultCount, Consumer<FinishedRecipe> consumer) {
+    protected static void stonecutterRecipes(Supplier<? extends ItemLike> ingredient, Supplier<? extends ItemLike> result, int resultCount, RecipeOutput consumer) {
         String prefix = getItemName(result.get()) + "_from_" + getItemName(ingredient.get());
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredient.get()), RecipeCategory.BUILDING_BLOCKS, result.get(), resultCount)
                 .unlockedBy(getHasName(ingredient.get()), has(ingredient.get())).save(consumer, stonecuttingPath(prefix + "_stonecutting"));
     }
 
-    protected static void lanternRecipes(Supplier<? extends ItemLike> torch, Supplier<? extends ItemLike> result, Consumer<FinishedRecipe> consumer) {
+    protected static void lanternRecipes(Supplier<? extends ItemLike> torch, Supplier<? extends ItemLike> result, RecipeOutput consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result.get()).define('#', PigsteelItems.PIGSTEEL_CHUNK.get()).define('X', torch.get())
                 .pattern("###").pattern("#X#").pattern("###").unlockedBy(getHasName(PigsteelItems.PIGSTEEL_CHUNK.get()), has(PigsteelItems.PIGSTEEL_CHUNK.get()))
                 .save(consumer, craftingPath(getItemName(result.get())));
     }
 
-    protected static void refinedToCutVariants(Supplier<? extends ItemLike> refined, Optional<Supplier<? extends ItemLike>> optionalWaxed, Supplier<? extends ItemLike> cut, Supplier<? extends ItemLike> cutSlab, Supplier<? extends ItemLike> cutStair, Consumer<FinishedRecipe> consumer) {
+    protected static void refinedToCutVariants(Supplier<? extends ItemLike> refined, Optional<Supplier<? extends ItemLike>> optionalWaxed, Supplier<? extends ItemLike> cut, Supplier<? extends ItemLike> cutSlab, Supplier<? extends ItemLike> cutStair, RecipeOutput consumer) {
         tilingBlockRecipes(refined, cut, consumer);
         stonecutterRecipes(refined, cut, 4, consumer);
         stonecutterRecipes(refined, cutSlab, 8, consumer);
@@ -128,7 +126,7 @@ public class PigsteelRecipeProvider extends RecipeProvider {
 
     }
 
-    protected static void cutToVariants(Supplier<? extends ItemLike> cut, Optional<Supplier<? extends ItemLike>> optionalWaxed, Supplier<? extends ItemLike> cutSlab, Supplier<? extends ItemLike> cutStair, Consumer<FinishedRecipe> consumer) {
+    protected static void cutToVariants(Supplier<? extends ItemLike> cut, Optional<Supplier<? extends ItemLike>> optionalWaxed, Supplier<? extends ItemLike> cutSlab, Supplier<? extends ItemLike> cutStair, RecipeOutput consumer) {
         stonecutterRecipes(cut, cutSlab, 2, consumer);
         stonecutterRecipes(cut, cutStair, 1, consumer);
         stairRecipes(cut, cutStair, consumer);

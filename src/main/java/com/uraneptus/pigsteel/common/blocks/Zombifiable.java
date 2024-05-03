@@ -13,20 +13,16 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoneycombItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChangeOverTimeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.common.extensions.IForgeBlock;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -42,7 +38,7 @@ public interface Zombifiable extends ChangeOverTimeBlock<Zombifiable.Zombificati
     }
 
     @Override
-    default void applyChangeOverTime(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+    default Optional<BlockState> getNextState(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         float chance = baseChance;
         if (canZombify(pLevel, pState) && pLevel.getRandom().nextInt(9) < 2) {
             chance *= this.getChanceModifier();
@@ -62,9 +58,10 @@ public interface Zombifiable extends ChangeOverTimeBlock<Zombifiable.Zombificati
                 }
             }
             if (pLevel.getRandom().nextFloat() < chance) {
-                getNext(pState).ifPresent(blockState -> pLevel.setBlockAndUpdate(pPos, blockState));
+                return getNext(pState);
             }
         }
+        return Optional.empty();
     }
 
     static Optional<Block> getPrevious(Block pBlock) {
@@ -109,8 +106,7 @@ public interface Zombifiable extends ChangeOverTimeBlock<Zombifiable.Zombificati
         return Optional.ofNullable(PigsteelBlocks.NEXT_BY_BLOCK.get().get(state.getBlock())).isPresent() && !PigsteelBlocks.NEXT_WAXED_BY_BLOCK.get().containsValue(state.getBlock());
     }
 
-    static InteractionResult applyWax(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        ItemStack itemInHand = player.getItemInHand(hand);
+    static ItemInteractionResult applyWax(ItemStack itemInHand, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if (itemInHand.getItem() instanceof HoneycombItem) {
             if (PigsteelBlocks.NEXT_WAXED_BY_BLOCK.get().containsKey(state.getBlock())) {
                 if (player instanceof ServerPlayer serverPlayer) {
@@ -123,10 +119,10 @@ public interface Zombifiable extends ChangeOverTimeBlock<Zombifiable.Zombificati
                 if (!player.isCreative() && !player.getAbilities().instabuild) {
                     itemInHand.shrink(1);
                 }
-                return InteractionResult.sidedSuccess(true);
+                return ItemInteractionResult.sidedSuccess(true);
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     enum ZombificationLevel implements StringRepresentable {
@@ -135,10 +131,11 @@ public interface Zombifiable extends ChangeOverTimeBlock<Zombifiable.Zombificati
         CORRUPTED("corrupted", MapColor.COLOR_GREEN),
         ZOMBIFIED("zombified", MapColor.PLANT);
 
-        ZombificationLevel(String name, MapColor mapColor){
+        ZombificationLevel(String name, MapColor mapColor) {
             this.name = name;
             this.mapColor = mapColor;
         }
+
         private String name;
         private MapColor mapColor;
 

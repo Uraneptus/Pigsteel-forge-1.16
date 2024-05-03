@@ -3,16 +3,19 @@ package com.uraneptus.pigsteel.data.client;
 import com.uraneptus.pigsteel.PigsteelMod;
 import com.uraneptus.pigsteel.core.registry.PigsteelBlocks;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.function.Supplier;
 
-import static com.uraneptus.pigsteel.data.PigsteelDatagenUtil.*;
+import static com.uraneptus.pigsteel.data.PigsteelDatagenUtil.modBlockLocation;
+import static com.uraneptus.pigsteel.data.PigsteelDatagenUtil.name;
 
 @SuppressWarnings("SameParameterValue")
 public class PigsteelBlockStateProvider extends BlockStateProvider {

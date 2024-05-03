@@ -3,12 +3,11 @@ package com.uraneptus.pigsteel.data.client;
 import com.uraneptus.pigsteel.PigsteelMod;
 import com.uraneptus.pigsteel.core.registry.PigsteelBlocks;
 import com.uraneptus.pigsteel.core.registry.PigsteelItems;
+import com.uraneptus.pigsteel.data.PigsteelDatagenUtil;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -28,15 +27,11 @@ public class PigsteelLangProvider extends LanguageProvider {
     }
 
     protected void forItem(Supplier<? extends Item> item) {
-        addItem(item, createTranslation(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.get())).getPath()));
+        addItem(item, createTranslation(Objects.requireNonNull(PigsteelDatagenUtil.name(item.get()))));
     }
 
     protected void forBlock(Supplier<? extends Block> block) {
-        addBlock(block, createTranslation(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block.get())).getPath()));
-    }
-
-    protected void forEntity(Supplier<? extends EntityType<?>> entity) {
-        addEntityType(entity, createTranslation(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entity.get())).getPath()));
+        addBlock(block, createTranslation(Objects.requireNonNull(PigsteelDatagenUtil.name(block.get()))));
     }
 
     public static String createTranslation(String path) {

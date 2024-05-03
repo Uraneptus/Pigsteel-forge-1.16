@@ -5,8 +5,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
@@ -27,11 +28,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ToolAction;
+import net.neoforged.neoforge.common.ToolActions;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Properties;
 
 
 public class ZombifiableLanternBlock extends Block implements Zombifiable, SimpleWaterloggedBlock {
@@ -63,12 +62,12 @@ public class ZombifiableLanternBlock extends Block implements Zombifiable, Simpl
 
     @Override
     public void randomTick(BlockState state, ServerLevel pLevel, BlockPos pos, RandomSource random) {
-        this.onRandomTick(state, pLevel, pos, random);
+        this.changeOverTime(state, pLevel, pos, random);
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        return Zombifiable.applyWax(state, level, pos, player, hand, result);
+    public ItemInteractionResult useItemOn(ItemStack itemUsed, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+        return Zombifiable.applyWax(itemUsed, state, level, pos, player, hand, result);
     }
 
     @Override
@@ -136,7 +135,7 @@ public class ZombifiableLanternBlock extends Block implements Zombifiable, Simpl
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+    public boolean isPathfindable(BlockState blockState, PathComputationType computationType) {
         return false;
     }
 

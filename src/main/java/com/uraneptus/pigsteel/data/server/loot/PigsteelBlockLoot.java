@@ -14,9 +14,10 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PigsteelBlockLoot extends BlockLootSubProvider {
     private static final Set<Item> EXPLOSION_RESISTANT = Set.of();
@@ -27,7 +28,7 @@ public class PigsteelBlockLoot extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return PigsteelBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
+        return PigsteelBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).collect(Collectors.toList());
     }
 
     @Override
@@ -48,7 +49,7 @@ public class PigsteelBlockLoot extends BlockLootSubProvider {
     }
 
     protected LootTable.Builder createPorkslag(Block block) {
-        return createSilkTouchDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(PigsteelItems.PIGSTEEL_CHUNK.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))));
+        return createSilkTouchDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(PigsteelItems.PIGSTEEL_CHUNK.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.FORTUNE))));
     }
 
     protected void createSlab(Block block) {

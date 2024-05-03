@@ -1,12 +1,8 @@
 package com.uraneptus.pigsteel.core.other.tags;
 
 import com.uraneptus.pigsteel.PigsteelMod;
-
 import net.minecraft.core.registries.Registries;
-
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-
 import net.minecraft.world.level.block.Block;
 
 public class PigsteelBlockTags {

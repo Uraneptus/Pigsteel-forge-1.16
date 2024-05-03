@@ -4,16 +4,15 @@ import com.uraneptus.pigsteel.PigsteelMod;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraftforge.client.model.generators.ModelProvider;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.ModelProvider;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class PigsteelDatagenUtil {
     public static final ResourceLocation HANDHELD = vanillaItemLocation("handheld");
 
     @SafeVarargs
-    public static HolderSet<PlacedFeature> getPlacedHolderSet(BootstapContext<?> context, ResourceKey<PlacedFeature>... placedFeatures) {
+    public static HolderSet<PlacedFeature> getPlacedHolderSet(BootstrapContext<?> context, ResourceKey<PlacedFeature>... placedFeatures) {
         List<Holder<PlacedFeature>> holders = new ObjectArrayList<>();
         for (ResourceKey<PlacedFeature> feature : placedFeatures) {
             holders.add(context.lookup(Registries.PLACED_FEATURE).getOrThrow(feature));
@@ -33,11 +32,11 @@ public class PigsteelDatagenUtil {
     }
 
     public static String name(Block block) {
-        return ForgeRegistries.BLOCKS.getKey(block).getPath();
+        return BuiltInRegistries.BLOCK.getKey(block).getPath();
     }
 
     public static String name(Item item) {
-        return ForgeRegistries.ITEMS.getKey(item).getPath();
+        return BuiltInRegistries.ITEM.getKey(item).getPath();
     }
 
     public static ResourceLocation modBlockLocation(String path) {

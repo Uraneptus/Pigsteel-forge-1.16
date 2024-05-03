@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "pigsteel:pigsteel_chunk"
   },
-  "result": "minecraft:iron_nugget"
+  "result": {
+    "count": 1,
+    "id": "minecraft:iron_nugget"
+  }
 }
