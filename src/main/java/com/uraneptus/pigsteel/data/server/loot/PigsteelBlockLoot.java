@@ -4,6 +4,8 @@ import com.uraneptus.pigsteel.common.blocks.Zombifiable;
 import com.uraneptus.pigsteel.common.blocks.ZombifiableSlabBlock;
 import com.uraneptus.pigsteel.core.registry.PigsteelBlocks;
 import com.uraneptus.pigsteel.core.registry.PigsteelItems;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -22,8 +24,8 @@ import java.util.stream.Collectors;
 public class PigsteelBlockLoot extends BlockLootSubProvider {
     private static final Set<Item> EXPLOSION_RESISTANT = Set.of();
 
-    protected PigsteelBlockLoot() {
-        super(EXPLOSION_RESISTANT, FeatureFlags.REGISTRY.allFlags());
+    protected PigsteelBlockLoot(HolderLookup.Provider provider) {
+        super(EXPLOSION_RESISTANT, FeatureFlags.REGISTRY.allFlags(), provider);
     }
 
     @Override
@@ -49,7 +51,7 @@ public class PigsteelBlockLoot extends BlockLootSubProvider {
     }
 
     protected LootTable.Builder createPorkslag(Block block) {
-        return createSilkTouchDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(PigsteelItems.PIGSTEEL_CHUNK.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.FORTUNE))));
+        return createSilkTouchDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(PigsteelItems.PIGSTEEL_CHUNK.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F))).apply(ApplyBonusCount.addOreBonusCount(this.registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE)))));
     }
 
     protected void createSlab(Block block) {

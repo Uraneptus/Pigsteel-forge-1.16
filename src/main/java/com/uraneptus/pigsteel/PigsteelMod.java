@@ -27,7 +27,7 @@ import java.util.concurrent.CompletableFuture;
 public class PigsteelMod {
     public static final String MOD_ID = "pigsteel";
     public static ResourceLocation modPrefix(String path) {
-        return new ResourceLocation(PigsteelMod.MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(PigsteelMod.MOD_ID, path);
     }
 
     public PigsteelMod(IEventBus bus) {
