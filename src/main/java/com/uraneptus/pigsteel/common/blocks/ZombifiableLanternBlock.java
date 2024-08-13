@@ -28,8 +28,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ToolAction;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -141,11 +141,11 @@ public class ZombifiableLanternBlock extends Block implements Zombifiable, Simpl
 
     @Override
     @Nullable
-    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction action, boolean simulate) {
-        if (action == ToolActions.AXE_SCRAPE) {
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility action, boolean simulate) {
+        if (action == ItemAbilities.AXE_SCRAPE) {
             return Zombifiable.getPrevious(state).isPresent() ? Zombifiable.getPrevious(state).get().getBlock().withPropertiesOf(state) : null;
         }
-        if (action == ToolActions.AXE_WAX_OFF) {
+        if (action == ItemAbilities.AXE_WAX_OFF) {
             return Zombifiable.getPreviousWaxed(state).isPresent() ? Zombifiable.getPreviousWaxed(state).get().getBlock().withPropertiesOf(state) : null;
         }
         return super.getToolModifiedState(state, context, action, simulate);

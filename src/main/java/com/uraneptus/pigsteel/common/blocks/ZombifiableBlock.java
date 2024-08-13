@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.common.ToolAction;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.Nullable;
 
 public class ZombifiableBlock extends Block implements Zombifiable {
@@ -47,14 +47,14 @@ public class ZombifiableBlock extends Block implements Zombifiable {
 
     @Override
     @Nullable
-    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction action, boolean simulate) {
-        if (action == ToolActions.AXE_SCRAPE) {
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+        if (itemAbility == ItemAbilities.AXE_SCRAPE) {
             return Zombifiable.getPrevious(state).isPresent() ? Zombifiable.getPrevious(state).get().getBlock().withPropertiesOf(state) : null;
         }
-        if (action == ToolActions.AXE_WAX_OFF) {
+        if (itemAbility == ItemAbilities.AXE_WAX_OFF) {
             return Zombifiable.getPreviousWaxed(state).isPresent() ? Zombifiable.getPreviousWaxed(state).get().getBlock().withPropertiesOf(state) : null;
         }
-        return super.getToolModifiedState(state, context, action, simulate);
+        return super.getToolModifiedState(state, context, itemAbility, simulate);
     }
 
     @Override
