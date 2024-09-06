@@ -53,7 +53,7 @@ public class PigsteelDatapackBuiltinEntriesProvider extends DatapackBuiltinEntri
 
         public static void create(BootstrapContext<ConfiguredFeature<?, ?>> context) {
             register(context, PigsteelDatapackBuiltinEntriesProvider.CONFIGURED_PIGSTEEL_ORE, () -> addPigsteelOreConfig(5, 0.5F));
-            register(context, PigsteelDatapackBuiltinEntriesProvider.CONFIGURED_PIGSTEEL_ORE_EXTRA, () -> addPigsteelOreConfig(7, 0.0F));
+            register(context, PigsteelDatapackBuiltinEntriesProvider.CONFIGURED_PIGSTEEL_ORE_EXTRA, () -> addPigsteelOreConfig(9, 0.0F));
         }
 
         private static ConfiguredFeature<?, ?> addPigsteelOreConfig(int veinSize, float discardChanceOnAirExposure) {
@@ -68,7 +68,7 @@ public class PigsteelDatapackBuiltinEntriesProvider extends DatapackBuiltinEntri
     private static class PlacedFeatures {
         public static void create(BootstrapContext<PlacedFeature> context) {
             register(context, PigsteelDatapackBuiltinEntriesProvider.PLACED_PIGSTEEL_ORE, addOreFeature(context, PigsteelDatapackBuiltinEntriesProvider.CONFIGURED_PIGSTEEL_ORE, 0, 128, 12));
-            register(context, PigsteelDatapackBuiltinEntriesProvider.PLACED_PIGSTEEL_ORE_EXTRA, addOreFeature(context, PigsteelDatapackBuiltinEntriesProvider.CONFIGURED_PIGSTEEL_ORE_EXTRA, 0, 128, 8));
+            register(context, PigsteelDatapackBuiltinEntriesProvider.PLACED_PIGSTEEL_ORE_EXTRA, addOreFeature(context, PigsteelDatapackBuiltinEntriesProvider.CONFIGURED_PIGSTEEL_ORE_EXTRA, 0, 128, 14));
 
         }
 
@@ -89,7 +89,6 @@ public class PigsteelDatapackBuiltinEntriesProvider extends DatapackBuiltinEntri
         public static void create(BootstrapContext<BiomeModifier> context) {
             register(context, "pigsteel_ore", () -> addFeatureModifier(context, PigsteelDatagenUtil.getPlacedHolderSet(context, PigsteelDatapackBuiltinEntriesProvider.PLACED_PIGSTEEL_ORE), PigsteelBiomeTags.PIGSTEEL_GENERATE_IN, GenerationStep.Decoration.UNDERGROUND_ORES));
             register(context, "pigsteel_ore_extra", () -> addFeatureModifier(context, PigsteelDatagenUtil.getPlacedHolderSet(context, PigsteelDatapackBuiltinEntriesProvider.PLACED_PIGSTEEL_ORE_EXTRA), PigsteelBiomeTags.HAS_EXTRA_PIGSTEEL, GenerationStep.Decoration.UNDERGROUND_ORES));
-
         }
 
         private static BiomeModifiers.AddFeaturesBiomeModifier addFeatureModifier(BootstrapContext<BiomeModifier> context, HolderSet<PlacedFeature> placedSet, TagKey<Biome> biomeTag, GenerationStep.Decoration decoration) {
