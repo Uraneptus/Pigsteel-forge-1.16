@@ -43,7 +43,6 @@ public class PigsteelBlockLoot extends BlockLootSubProvider {
             } else {
                 this.dropSelf(block);
             }
-
         });
 
         this.dropSelf(PigsteelBlocks.PIGSTEEL_CHUNK_BLOCK.get());

@@ -1,6 +1,7 @@
 package com.uraneptus.pigsteel;
 
 import com.uraneptus.pigsteel.core.registry.PigsteelBlocks;
+import com.uraneptus.pigsteel.core.registry.PigsteelFeatures;
 import com.uraneptus.pigsteel.core.registry.PigsteelItems;
 import com.uraneptus.pigsteel.data.client.PigsteelBlockStateProvider;
 import com.uraneptus.pigsteel.data.client.PigsteelItemModelProvider;
@@ -35,7 +36,7 @@ public class PigsteelMod {
 
         PigsteelItems.ITEMS.register(bus);
         PigsteelBlocks.BLOCKS.register(bus);
-
+        PigsteelFeatures.FEATURES.register(bus);
     }
 
     @SubscribeEvent
@@ -58,6 +59,4 @@ public class PigsteelMod {
         generator.addProvider(includeServer, new PigsteelDatapackBuiltinEntriesProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new PigsteelRecipeProvider(packOutput, lookupProvider));
     }
-
-
 }
